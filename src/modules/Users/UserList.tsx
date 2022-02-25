@@ -1,6 +1,5 @@
 import { observer } from 'mobx-react-lite';
 import { useStore } from '../../utils';
-import { DashboardStore } from '../Dashboard';
 import { UserStore } from './store';
 
 export const UserList = observer(() => {
