@@ -1,10 +1,8 @@
 import { observer } from 'mobx-react-lite';
-import { useStore } from '../../utils';
-import { DashboardStore } from '../Dashboard';
-import { UserStore } from './store';
+import { useUser } from './hooks';
 
 export const UserList = observer(() => {
-  const { userList, refreshList } = useStore(UserStore);
+  const { userList, refreshList } = useUser();
 
   return (
     <div>

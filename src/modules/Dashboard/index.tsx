@@ -1,5 +1,4 @@
 import { AppModule, lazyLoad } from '../../utils';
-import { DashboardStore } from './store';
 
 const Dashboard = lazyLoad(
   () => import('./Dashboard'),
@@ -13,8 +12,7 @@ const module: AppModule = {
     path: '/',
     element: <Dashboard />,
   },
-  stores: [DashboardStore],
 };
 
-export * from './store';
+export * from './atoms';
 export default module;

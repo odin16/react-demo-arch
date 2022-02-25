@@ -1,7 +1,7 @@
 import { FC, useMemo, useState } from 'react';
 import { Link, Route, Routes, useLocation } from 'react-router-dom';
 import logo from '../assets/logo.svg';
-import { AppModule, StoreProvider } from '../utils';
+import { AppModule } from '../utils';
 import './index.css';
 
 interface Props {
@@ -43,7 +43,7 @@ const App: FC<Props> = ({ modules }) => {
     <div className="App">
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
-        <p>Clean Architecture + Modules + MobX</p>
+        <p>Clean Architecture + Modules + Recoil</p>
         <ul className="App-nav">{links}</ul>
       </header>
 
