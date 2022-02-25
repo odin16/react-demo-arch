@@ -1,19 +1,17 @@
 import { observer } from 'mobx-react-lite';
-import { userStore } from './store';
+import { StoreProvider, useStore } from '../../utils';
+import { DashboardStore } from '../Dashboard';
+import { UserStore } from './store';
+import { UserList } from './UserList';
 
 export const Users = observer(() => {
-  const { userList, refreshList } = userStore;
+  const { hello } = useStore(DashboardStore);
 
   return (
-    <div>
+    <StoreProvider stores={[UserStore]}>
       <h2>Users Module</h2>
-      <button onClick={refreshList}>Refresh</button>
-
-      <ul>
-        {userList.map(item => (
-          <li key={item.id}>{item.name}</li>
-        ))}
-      </ul>
-    </div>
+      <h4>Hello {hello}</h4>
+      <UserList />
+    </StoreProvider>
   );
 });

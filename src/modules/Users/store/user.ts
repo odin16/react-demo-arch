@@ -16,5 +16,3 @@ export class UserStore {
     runInAction(() => (this.userList = users));
   };
 }
-
-export const userStore = new UserStore();

@@ -1,23 +1,21 @@
-import { useMemo, useState } from 'react';
-import {
-  BrowserRouter as Router,
-  Link,
-  Route,
-  Routes,
-  useLocation,
-} from 'react-router-dom';
+import { FC, useMemo, useState } from 'react';
+import { Link, Route, Routes, useLocation } from 'react-router-dom';
 import logo from '../assets/logo.svg';
-import appModules from '../modules';
+import { AppModule, StoreProvider } from '../utils';
 import './index.css';
 
-function App() {
+interface Props {
+  modules: AppModule[];
+}
+
+const App: FC<Props> = ({ modules }) => {
   const { pathname } = useLocation();
   const lastModule = pathname.split('/')?.[1];
   const [currentModule, setCurrentModule] = useState(lastModule || 'dashboard');
 
   const links = useMemo(
     () =>
-      appModules.map(module => (
+      modules.map(module => (
         <li
           key={module.key}
           className={currentModule === module.key ? 'active' : ''}
@@ -35,7 +33,7 @@ function App() {
 
   const routes = useMemo(
     () =>
-      appModules.map(module => (
+      modules.map(module => (
         <Route {...module.routeProps} key={module.label} />
       )),
     [],
@@ -54,6 +52,6 @@ function App() {
       </div>
     </div>
   );
-}
+};
 
 export default App;

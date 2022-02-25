@@ -1,11 +1,12 @@
-import { lazyLoad } from '../../utils';
+import { AppModule, lazyLoad } from '../../utils';
+import { UserStore } from './store';
 
 const Users = lazyLoad(
   () => import('./Users'),
   module => module.Users,
 );
 
-export default {
+const module: AppModule = {
   key: 'users',
   label: 'Users',
   routeProps: {
@@ -13,3 +14,6 @@ export default {
     element: <Users />,
   },
 };
+
+export * from './store';
+export default module;

@@ -1,16 +1,20 @@
-import { lazyLoad } from '../../utils';
+import { AppModule, lazyLoad } from '../../utils';
+import { DashboardStore } from './store';
 
 const Dashboard = lazyLoad(
   () => import('./Dashboard'),
   module => module.Dashboard,
 );
 
-export default {
+const module: AppModule = {
   key: 'dashboard',
   label: 'Dashboard',
   routeProps: {
     path: '/',
-    exact: true,
     element: <Dashboard />,
   },
+  stores: [DashboardStore],
 };
+
+export * from './store';
+export default module;
