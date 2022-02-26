@@ -1,32 +1,50 @@
-import hash from 'object-hash';
-import { createContext, FC, useContext } from 'react';
-import { Constructor } from './types';
-
-interface StoreContext {
-  [store: string]: any;
-}
+import { createContext, FC, useContext, useMemo } from 'react';
+import { StoreClass, StoreFactory } from './types';
 
 interface Props {
-  stores: Constructor[];
+  stores: (StoreClass | StoreFactory)[];
 }
 
-const storeContext = createContext<StoreContext>({});
+let globalStores = new Map<any, any>();
+const storeContext = createContext<typeof globalStores>(globalStores);
 
 export const StoreProvider: FC<Props> = ({ children, stores }) => {
   const parentContext = useContext(storeContext);
-  const context: StoreContext = stores.reduce(
-    (stores, store) => ({ ...stores, [hash(store)]: new store() }),
-    {},
-  );
+
+  const context = useMemo(() => {
+    if (!stores.length) return parentContext;
+
+    const container = new Map();
+
+    stores.forEach(store => {
+      let instance;
+
+      try {
+        instance = (store as StoreFactory)();
+      } catch (err: any) {
+        if (err?.message.includes("cannot be invoked without 'new'")) {
+          instance = new (store as StoreClass)();
+        } else {
+          throw err;
+        }
+      }
+
+      container.set(store, instance);
+    });
+
+    return (globalStores = new Map([...parentContext, ...container]));
+  }, [stores]);
 
   return (
-    <storeContext.Provider value={{ ...parentContext, ...context }}>
-      {children}
-    </storeContext.Provider>
+    <storeContext.Provider value={context}>{children}</storeContext.Provider>
   );
 };
 
-export function useStore<T>(store: Constructor<T>): T {
+export function useStore<T>(identifier: StoreClass<T>): T {
   const context = useContext(storeContext);
-  return context[hash(store) as any];
+  return context.get(identifier);
+}
+
+export function getStore<T>(identifier: StoreClass<T>): T {
+  return globalStores.get(identifier);
 }

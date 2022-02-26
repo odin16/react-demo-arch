@@ -1,10 +1,12 @@
 import { PathRouteProps } from 'react-router-dom';
 
-export type Constructor<T = {}> = new (...args: any[]) => T;
+export type StoreClass<T = {}> = new (...args: any[]) => T;
+
+export type StoreFactory<T = {}> = (...args: any[]) => T;
 
 export interface AppModule {
   key: string;
   label: string;
   routeProps: PathRouteProps;
-  stores?: Constructor[];
+  stores?: (StoreClass | StoreFactory)[];
 }
