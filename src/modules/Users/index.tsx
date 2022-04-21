@@ -1,5 +1,4 @@
 import { AppModule, lazyLoad } from '../../utils';
-import { UserStore } from './store';
 
 const Users = lazyLoad(
   () => import('./Users'),
