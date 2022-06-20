@@ -3,6 +3,7 @@ import { StoreClass, StoreFactory } from './types';
 
 interface Props {
   stores: (StoreClass | StoreFactory)[];
+  children?: React.ReactNode;
 }
 
 let globalStores = new Map<any, any>();
@@ -21,8 +22,8 @@ export const StoreProvider: FC<Props> = ({ children, stores }) => {
 
       try {
         instance = (store as StoreFactory)();
-      } catch (err: any) {
-        if (err?.message.includes("cannot be invoked without 'new'")) {
+      } catch (err) {
+        if ((err as any)?.message.includes("cannot be invoked without 'new'")) {
           instance = new (store as StoreClass)();
         } else {
           throw err;
